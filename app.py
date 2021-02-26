@@ -32,6 +32,8 @@ def index():
     else:
         tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html', tasks=tasks)
+
+
 @app.route('/delete/<int:id>')
 def delete(id):
     task_to_delete = Todo.query.get_or_404(id)
@@ -42,9 +44,10 @@ def delete(id):
     except:
         return 'There was a problem in deleting the task'
 
+
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    task=Todo.query.get_or_404(id)
+    task = Todo.query.get_or_404(id)
     if request.method == 'POST':
         task.content = request.form['content']
         try:

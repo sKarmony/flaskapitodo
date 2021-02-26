@@ -1,0 +1,56 @@
+Index: app.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import Flask, render_template, url_for, request, redirect\r\nfrom flask_sqlalchemy import SQLAlchemy\r\nfrom datetime import datetime\r\n\r\napp = Flask(__name__)\r\napp.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'\r\ndb = SQLAlchemy(app)\r\n\r\n\r\nclass Todo(db.Model):\r\n    id = db.Column(db.Integer, primary_key=True)\r\n    content = db.Column(db.String(200), nullable=False)\r\n    date_created = db.Column(db.DateTime, default=datetime.utcnow)\r\n\r\n    def __repr__(self):\r\n        return '<Task %r>' % self.id\r\n\r\n\r\n@app.route('/', methods=['POST', 'GET'])\r\ndef index():\r\n    if request.method == 'POST':\r\n        task_content = request.form['content']\r\n        new_task = Todo(content=task_content)\r\n\r\n        try:\r\n            db.session.add(new_task)\r\n            db.session.commit()\r\n            return redirect('/')\r\n        except:\r\n            return 'There was an issue adding your task'\r\n\r\n    else:\r\n        tasks = Todo.query.order_by(Todo.date_created).all()\r\n        return render_template('index.html', tasks=tasks)\r\n@app.route('/delete/<int:id>')\r\ndef delete(id):\r\n    task_to_delete = Todo.query.get_or_404(id)\r\n    try:\r\n        db.session.delete(task_to_delete)\r\n        db.session.commit()\r\n        return redirect('/')\r\n    except:\r\n        return 'There was a problem in deleting the task'\r\n\r\n@app.route('/update/<int:id>', methods=['GET', 'POST'])\r\ndef update(id):\r\n    task=Todo.query.get_or_404(id)\r\n    if request.method == 'POST':\r\n        task.content = request.form['content']\r\n        try:\r\n            db.session.commit()\r\n            return redirect('/')\r\n        except:\r\n            return 'There was an issue updating your task'\r\n    else:\r\n        return render_template('update.html', task=task)\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    app.run(debug=True)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app.py b/app.py
+--- a/app.py	(revision 8bc95d3790508e1c307fadd9e32867322a9857c2)
++++ b/app.py	(date 1614326133623)
+@@ -32,6 +32,8 @@
+     else:
+         tasks = Todo.query.order_by(Todo.date_created).all()
+         return render_template('index.html', tasks=tasks)
++
++
+ @app.route('/delete/<int:id>')
+ def delete(id):
+     task_to_delete = Todo.query.get_or_404(id)
+@@ -42,9 +44,10 @@
+     except:
+         return 'There was a problem in deleting the task'
+ 
++
+ @app.route('/update/<int:id>', methods=['GET', 'POST'])
+ def update(id):
+-    task=Todo.query.get_or_404(id)
++    task = Todo.query.get_or_404(id)
+     if request.method == 'POST':
+         task.content = request.form['content']
+         try:
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"e6e26299-caac-45a5-bfb9-34fc5b8a470f\" name=\"Default Changelist\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/pythonProject.iml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1obL9IsvRRGOAWOJsagqAogCvgG\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"main\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"pythonProject\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/main.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"e6e26299-caac-45a5-bfb9-34fc5b8a470f\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1613550192212</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1613550192212</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 8bc95d3790508e1c307fadd9e32867322a9857c2)
++++ b/.idea/workspace.xml	(date 1614326140332)
+@@ -2,12 +2,8 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="e6e26299-caac-45a5-bfb9-34fc5b8a470f" name="Default Changelist" comment="">
+-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/pythonProject.iml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
