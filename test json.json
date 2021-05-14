@@ -1,0 +1,110 @@
+{
+  "greenplum_table_ddl": [
+    {
+      "table_name": "greenplum_table",
+      "table_query": "greenplum table query"
+    }
+  ],
+  "group_id": "30634",
+  "integration": {
+    "custom_params": {},
+    "skip_integration": "string",
+    "source_job_wait_time": "string",
+    "start_source_job_prod": "string",
+    "start_target_job_prod": "string"
+  },
+  "parameters": {
+    "common_params": {
+      "commit_message": "commit by CICD",
+      "custom_params": {},
+      "email_distribution": "email_dist@dell.com"
+    },
+    "source_params": {
+      "custom_params": {},
+      "jdbc_initial_offset": "intial offset"
+    },
+    "target_params": {
+      "custom_params": {},
+      "db_type": "greenplum"
+    }
+  },
+  "permissions": {
+    "subject_id": [
+      "DDL_EBIDSC", "DDL_DSC", "svc_npddlebidscdev"
+    ]
+  },
+  "project": {
+    "domain": "MFG",
+    "job_label": {"source": "ebia_dsc_batch", "targets": {"intermediate": "ebia_dsc_streaming", "final": "ebia_dsc_remote"}},
+    "job_type": "NSJ",
+    "load_type": "FULL",
+    "pipeline_label": [
+      "ebia_dsc", "EBIDSC_MTRC_FT5_CICD_REL08MAR21" 
+    ],
+    "program": "EBIDSC"
+  },
+  "project_desc": "project created by sunil through REST API",
+  "project_name": "sunil_project_1",
+  "source_table_query": [
+    {
+      "table_name": "source_table",
+      "table_query": "source table query"
+    }
+  ],
+  "teradata_table_ddl": [
+    {
+      "table_name": "teradata_table",
+      "table_query": "teradata table query"
+    }
+  ],
+  "workflow": {
+    "control_m": {
+      "custom_params": {},
+      "file_path": "control m file path"
+    },
+    "greenplum": {
+      "database_host": "string",
+      "database_name": "string",
+      "database_password": "string",
+      "database_port": "string",
+      "database_user": "string",
+      "gp_load_script_name": "string",
+      "schema": "string",
+      "shell_config_template_gp": "string",
+      "type": "string"
+    },
+    "scripts": [
+      {
+        "custom_params": {},
+        "name": "string",
+        "remote_path": "string"
+      }
+    ],
+    "source": {
+      "credential_store_group": "string",
+      "credential_store_id": "string",
+      "credential_store_name": "string",
+      "custom_param": {},
+      "database_uri": "string",
+      "database_user": "string",
+      "name": "string",
+      "schema": "string"
+    },
+    "tables": [
+      {
+        "custom_params": {},
+        "name": "string",
+        "offset_column": "string"
+      }
+    ],
+    "template_name": "string",
+    "teradata": {
+      "database_host": "string",
+      "database_password": "string",
+      "database_user": "string",
+      "schema": "string",
+      "td_loader_script_name": "string",
+      "type": "string"
+    }
+  }
+}
